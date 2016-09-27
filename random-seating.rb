@@ -5,11 +5,20 @@ random-seating.rb
 A port to Ruby of randomSeating.py.
 
 @author Charles Bailey
-@version 0.1 9/26/16
+@version 0.2 9/26/16
 
 =end
 
-def check_neighbors(population, person)
+=begin
+	get_neigbors returns the adjacent people in a linear population
+	arrangement.
+
+	@param population an array of strings to search through
+	@param person the person for which to search
+
+	@return an array containing a person's neighbors
+=end
+def get_neighbors(population, person)
 	if population.nil? || population.empty?
 		puts "[!] Empty population!"
 		exit(4)
@@ -23,13 +32,52 @@ def check_neighbors(population, person)
 		exit(5)
 	end
 
+	# I've changed this logic because the room is NOT
+	# circular.
 	if loc == 0
-		return population[ 1..[2, population.length].min ]
+		return [population[1]]
 	elsif loc == population.length-1
-		return population[ ([0,population.length-2].min)..([0, population.length-1].min) ]
+		return [population[ population.length-2 ]]
 	end
 
 	[population[loc-1], population[loc+1]]
+end
+
+=begin
+	shuffle_and_verify will verify that no two people were
+	originally next to each other.
+
+	The function will correct any issues found.
+
+	@param pop the array of people to check
+	@param neighbors a hash of strings to arrays of strings
+	representing a person's original neigbors
+
+	@return void
+=end
+def shuffle_and_verify(pop, neighbors)
+
+	changes = true;
+	while changes
+		changes = false;
+		for i in 1...pop.length
+
+			# if the person to the left was an original neighbor...
+			if neighbors[pop[i]].include? pop[i-1]
+
+				j = rand(0...pop.length)
+				while j == i-1 || j == i
+					j = rand(0...pop.length)
+				end
+
+				pop[i-1], pop[j] = pop[j], pop[i-1]
+
+				changes = true
+			end
+
+		end
+	end
+	return pop
 end
 
 
@@ -41,53 +89,26 @@ unless ARGV.length == 1
 end
 
 begin
-	students_ordered = File.readlines(ARGV[0]).map{|line| line.strip}
+	students_original = File.readlines(ARGV[0]).map{|line| line.strip}
 rescue
 	puts "[!] Could not open file #{ARGV[0]}"
 	exit(2)
 end
 
-num_students = students_ordered.length
-
-if num_students <= 1
+if students_original.length <= 1
 	puts "[!] Not enough students to shuffle."
 	exit(3)
 end
 
-students = students_ordered.dup
-new_order = []
-
-while new_order.length < num_students
-
-	tmp_student = students[rand(students.length)]
-	while new_order.include? tmp_student
-		tmp_student = students[rand(students.length)]
-	end
-
-	neighbors = check_neighbors(students_ordered, tmp_student)
-	unless new_order.empty?
-		if neighbors.include? new_order.last
-			if students.length != 1
-				next		
-			else
-				for i in 1...new_order.length
-					if !( neighbors.include?( new_order[i]) || neighbors.include?( new_order[i-1]) )
-						
-						new_order.insert(i, tmp_student)
-						students.delete(tmp_student)
-						
-						break
-
-					end
-				end
-			end
-		end
-	end
-
-	new_order << tmp_student
-	students.delete(tmp_student)
+# I am going to cache the neighbors...
+neighbors = {}
+students_original.each do |person|
+	neighbors[person] = get_neighbors(students_original, person)
 end
 
-for i in 0...new_order.length
-	puts "#{format("%2i", i+2)}:\t#{new_order[i]}"
+students_new = shuffle_and_verify( students_original.dup, neighbors )
+
+for i in 0...students_new.length
+	puts "#{format("%2i", i+2)}|\t#{students_new[i]}"
 end
+puts "|X|\tEND"
