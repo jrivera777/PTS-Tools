@@ -64,8 +64,24 @@ while new_order.length < num_students
 		tmp_student = students[rand(students.length)]
 	end
 
-	unless new_order.empty? || students.length == 1
-		next if check_neighbors(students_ordered, tmp_student).include? new_order.last
+	neighbors = check_neighbors(students_ordered, tmp_student)
+	unless new_order.empty?
+		if neighbors.include? new_order.last
+			if students.length != 1
+				next		
+			else
+				for i in 1...new_order.length
+					if !( neighbors.include?( new_order[i]) || neighbors.include?( new_order[i-1]) )
+						
+						new_order.insert(i, tmp_student)
+						students.delete(tmp_student)
+						
+						break
+
+					end
+				end
+			end
+		end
 	end
 
 	new_order << tmp_student
