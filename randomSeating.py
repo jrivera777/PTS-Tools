@@ -44,19 +44,30 @@ if __name__ == "__main__":
     newSeating = [] #load with new seating arangement
 
     #keep working until we've seated everyone
+    done = False
     while len(newSeating) != studentCount:
         nextStudent = random.choice(students)
         while nextStudent in newSeating:
             nextStudent = random.choice(students)
 
-        if newSeating:
+        if newSeating: #is anyone seated?
             if len(students) != 1:
                 if newSeating[-1] in getNeighbors(students_ordered, nextStudent):
                     continue
-        
-        students.remove(nextStudent)
-        newSeating.append(nextStudent)
-        
-for i in range(0, studentCount):
-    print(i + 2, " - ", newSeating[i])
+            else: #only one student left to seat. Find a safe spot to put them.
+                for i in range(1, studentCount - 1):
+                    neighbors = getNeighbors(students_ordered, nextStudent)
+                    if newSeating[i - 1] not in neighbors and newSeating[i] not in neighbors:
+                        newSeating.insert(i, nextStudent)
+                        students.remove(nextStudent)
+                        done = True
+                        break;
+        #we are only done when we've safely added the last student to the list. Otherwise,
+        #we are simply adding the next student to the end of the seating list.
+        if not done:
+            students.remove(nextStudent)
+            newSeating.append(nextStudent)
 
+#display where each student sits, according to computer number in STEM Lab.        
+for i in range(0, studentCount):
+    print("Station", i + 2, "-", newSeating[i])
