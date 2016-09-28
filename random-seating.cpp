@@ -11,31 +11,34 @@
 #include <stdexcept>
 
 std::vector<std::string>
-get_neighbors(const std::vector<std::string>& pop, const std::string& person) {
+get_neighbors(const std::vector<std::string>& pop, const int& idx) {
 	if (pop.empty())
 		throw std::invalid_argument("An empty vector cannot yield neighbors.");
 	else if (pop.size() == 1)
-		return std::vector<std::string>{""}; /* will this work? */
+		return std::vector<std::string>{""};
+	else if (idx < 0 || idx >= pop.size())
+		throw std::out_of_range("idx is out of the range of pop");
 
-	auto loc = std::find(pop.begin(), pop.end(), person);
+	if ( idx == 0 )
+		return std::vector<std::string>{ pop[idx+1], pop.back() };
+	else if ( idx == pop.size()-1 )
+		return std::vector<std::string>{ pop.front(), pop[idx-1] };
 
-	if (loc == pop.end())
-		throw std::logic_error("the person could not be found in the vector");
-
-	if (loc == pop.begin())
-		return std::vector<std::string>{*(loc+1)};
-	else if (loc == pop.end()-1)
-		return std::vector<std::string>{*(loc-1)};
-
-	return std::vector<std::string>{*(loc-1), *(loc+1)};
+	return std::vector<std::string>{ pop[idx-1], pop[idx+1] };
 }
 
 void
 shuffle_and_verify(std::vector<std::string>& pop,
 	std::map<std::string, std::vector<std::string>>& neighbors)
 {
-	bool changes = true;
 	int i, n, j;
+	for (i = pop.size()-1, n = pop.size(); i >= 0; i--) {
+		j = rand() % n;
+		std::swap(pop[i], pop[j]);
+	}
+
+
+	bool changes = true;
 	while (changes) {
 		changes = false;
 		for (i = 1, n = pop.size(); i < n; i++) {
@@ -84,8 +87,8 @@ int main(int argc, char **argv) {
 	}
 
 	std::map<std::string, std::vector<std::string> > neighbors;
-	for (std::string& s : students_orig)
-		neighbors[s] = get_neighbors(students_orig, s);
+	for (int i = 0; i < students_orig.size(); i++)
+		neighbors[ students_orig[i] ] = get_neighbors(students_orig, i);
 
 	std::vector<std::string> students_new = students_orig;
 	shuffle_and_verify(students_new, neighbors);
