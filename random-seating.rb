@@ -18,29 +18,26 @@ A port to Ruby of randomSeating.py.
 
 	@return an array containing a person's neighbors
 =end
-def get_neighbors(population, person)
+def get_neighbors(population, idx)
 	if population.nil? || population.empty?
 		puts "[!] Empty population!"
 		exit(4)
 	elsif population.length == 1
 		return []
-	end
-
-	loc = population.index(person)
-	if loc.nil?
-		puts "[!] Could not find such a person in population!"
-		exit(5)
+	elsif idx < 0 || idx >= population.length
+		puts "[!] Out of bounds in get_neighbors."
+		exit(6)
 	end
 
 	# I've changed this logic because the room is NOT
 	# circular.
-	if loc == 0
+	if idx == 0
 		return [population[1]]
-	elsif loc == population.length-1
+	elsif idx == population.length-1
 		return [population[ population.length-2 ]]
 	end
 
-	[population[loc-1], population[loc+1]]
+	[population[idx-1], population[idx+1]]
 end
 
 =begin
@@ -102,11 +99,12 @@ end
 
 # I am going to cache the neighbors...
 neighbors = {}
-students_original.each do |person|
-	neighbors[person] = get_neighbors(students_original, person)
+students_original.each_with_index do |person, i|
+	neighbors[person] = get_neighbors(students_original, i)
 end
 
-students_new = shuffle_and_verify( students_original.dup, neighbors )
+# shuffling to increase entropy
+students_new = shuffle_and_verify( students_original.dup.shuffle, neighbors )
 
 for i in 0...students_new.length
 	puts "#{format("%2i", i+2)}|\t#{students_new[i]}"
