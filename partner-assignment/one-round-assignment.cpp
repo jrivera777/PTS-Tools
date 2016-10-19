@@ -22,21 +22,9 @@
 
 #include "typedefs.h"
 
-void shuffle(s_vec& students) {
-	int rand_idx;
-	for (int i = students.size() - 1; i >= 0; i--) {
-		rand_idx = rand() % students.size();
-		std::swap(students[i], students[rand_idx]);
-	}
-}
+void shuffle(s_vec& students);
 
-void print_partners(const s_vec& students, const size_t& group_size) {
-	for (size_t i = 0; i < students.size(); i++) {
-		std::cout << students[i]
-			<< ((i+1) % group_size == 0 ? "\n" : " ");
-	}
-	std::cout << std::endl;
-}
+void print_partners(const s_vec& students, const size_t& group_size);
 
 int main(int argc , char **argv){
 	srand(time(NULL));
@@ -70,4 +58,20 @@ int main(int argc , char **argv){
 	print_partners(students, group_size);
 
 	return 0;
+}
+
+void shuffle(s_vec& students) {
+	int rand_idx;
+	for (int i = students.size() - 1; i >= 0; i--) {
+		rand_idx = rand() % students.size();
+		std::swap(students[i], students[rand_idx]);
+	}
+}
+
+void print_partners(const s_vec& students, const size_t& group_size) {
+	for (size_t i = 0; i < students.size(); i++) {
+		std::cout << students[i]
+			<< ((i+1) % group_size == 0 ? "\n" : " ");
+	}
+	std::cout << std::endl;
 }

@@ -25,22 +25,7 @@
 
 void
 generate_partners(const s_vec& classmates, size_t_vec& partners,
-	const size_t& start, const size_t& idx, const size_t& len)
-{
-	if (idx >= len) {
-		for(auto& p : partners)
-			std::cout << classmates[p] << " ";
-		std::cout << std::endl;
-
-		return; /* return bcs we don't need any more people */
-	}
-
-	for (size_t i = start; i < classmates.size(); i++) {
-		partners[idx] = i;
-
-		generate_partners(classmates, partners, i+1, idx+1, len);
-	}
-}
+	const size_t& start, const size_t& idx, const size_t& len);
 
 int main(int argc, char **argv) {
 
@@ -80,4 +65,23 @@ int main(int argc, char **argv) {
 		<< " with " << students.size() % group_size << " students left over.\n";
 
 	return 0;
+}
+
+void
+generate_partners(const s_vec& classmates, size_t_vec& partners,
+	const size_t& start, const size_t& idx, const size_t& len)
+{
+	if (idx >= len) {
+		for(auto& p : partners)
+			std::cout << classmates[p] << " ";
+		std::cout << std::endl;
+
+		return; /* return bcs we don't need any more people */
+	}
+
+	for (size_t i = start; i < classmates.size(); i++) {
+		partners[idx] = i;
+
+		generate_partners(classmates, partners, i+1, idx+1, len);
+	}
 }
