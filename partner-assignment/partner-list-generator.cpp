@@ -1,5 +1,5 @@
 /*
-	partner-assignment.cpp
+	partner-list-generator.cpp
 	@author Charles Bailey
 	@version 0.0.1 10/11/16
 
@@ -21,34 +21,17 @@
 
 #include <stdexcept>
 
-typedef std::vector<std::string> s_vec;
-typedef std::vector<size_t> size_t_vec;
-typedef const size_t c_size_t;
+#include "typedefs.h"
 
 void
 generate_partners(const s_vec& classmates, size_t_vec& partners,
-	c_size_t& start, c_size_t& idx, c_size_t& len)
-{
-	if (idx >= len) {
-		for(auto& p : partners)
-			std::cout << classmates[p] << " ";
-		std::cout << std::endl;
-
-		return; /* return bcs we don't need any more people */
-	}
-
-	for (size_t i = start; i < classmates.size(); i++) {
-		partners[idx] = i;
-
-		generate_partners(classmates, partners, i+1, idx+1, len);
-	}
-}
+	const size_t& start, const size_t& idx, const size_t& len);
 
 int main(int argc, char **argv) {
 
 	if (argc != 3) {
-		std::cout << "[!] Usage: ./partner-assignment <text file with students> <group size>\n";
-		exit(1);
+		std::cout << "[!] Usage: ./partner-list-generator <text file with students> <group size>\n";
+		std::exit(1);
 	}
 
 	std::fstream fs;
@@ -56,10 +39,10 @@ int main(int argc, char **argv) {
 		fs = std::fstream(argv[1], std::fstream::in);
 	} catch (std::exception& e) {
 		std::cout << "Something went wrong: " << e.what() << std::endl;
-		exit(2);
+		std::exit(2);
 	}
 
-	size_t group_size = std::stoi(std::string(argv[2]));
+	const size_t group_size = std::stoi(std::string(argv[2]));
 
 	s_vec students;
 	std::string tmp_student;
@@ -80,4 +63,25 @@ int main(int argc, char **argv) {
 	std::cout << "A class of size " << students.size() << " split into "
 		<< students.size() / group_size << " groups of " << group_size
 		<< " with " << students.size() % group_size << " students left over.\n";
+
+	return 0;
+}
+
+void
+generate_partners(const s_vec& classmates, size_t_vec& partners,
+	const size_t& start, const size_t& idx, const size_t& len)
+{
+	if (idx >= len) {
+		for(auto& p : partners)
+			std::cout << classmates[p] << " ";
+		std::cout << std::endl;
+
+		return; /* return bcs we don't need any more people */
+	}
+
+	for (size_t i = start; i < classmates.size(); i++) {
+		partners[idx] = i;
+
+		generate_partners(classmates, partners, i+1, idx+1, len);
+	}
 }
