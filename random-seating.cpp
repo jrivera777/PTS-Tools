@@ -11,7 +11,7 @@
 #include <stdexcept>
 
 std::vector<std::string>
-get_neighbors(const std::vector<std::string>& pop, const int& idx) {
+get_neighbors(const std::vector<std::string>& pop, const size_t& idx) {
 	if (pop.empty())
 		throw std::invalid_argument("An empty vector cannot yield neighbors.");
 	else if (pop.size() == 1)
@@ -66,7 +66,7 @@ int main(int argc, char **argv) {
 
 	std::fstream fs;
 	try {
-		fs = std::fstream(argv[1], std::fstream::in);
+		fs = std::move( std::fstream(argv[1], std::fstream::in) );
 	} catch (...) {
 		std::cout << "Could not open " << std::string(argv[1]) << std::endl;
 		exit(2);
@@ -87,12 +87,12 @@ int main(int argc, char **argv) {
 	}
 
 	std::map<std::string, std::vector<std::string> > neighbors;
-	for (int i = 0; i < students_orig.size(); i++)
+	for (size_t i = 0; i < students_orig.size(); i++)
 		neighbors[ students_orig[i] ] = get_neighbors(students_orig, i);
 
 	std::vector<std::string> students_new = students_orig;
 	shuffle_and_verify(students_new, neighbors);
 
-	for (int i = 0; i < students_new.size(); i++)
+	for (size_t i = 0; i < students_new.size(); i++)
 		std::cout << i+2 << "|\t" << students_new[i] << std::endl;
 }
