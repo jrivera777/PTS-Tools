@@ -36,7 +36,7 @@ int main(int argc, char **argv) {
 
 	std::fstream fs;
 	try {
-		fs = std::move( std::fstream(argv[1], std::fstream::in) );
+		fs = std::fstream(argv[1], std::fstream::in);
 	} catch (std::exception& e) {
 		std::cout << "Something went wrong: " << e.what() << std::endl;
 		std::exit(2);

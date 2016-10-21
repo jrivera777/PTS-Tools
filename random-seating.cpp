@@ -16,7 +16,7 @@ get_neighbors(const std::vector<std::string>& pop, const size_t& idx) {
 		throw std::invalid_argument("An empty vector cannot yield neighbors.");
 	else if (pop.size() == 1)
 		return std::vector<std::string>{""};
-	else if (idx < 0 || idx >= pop.size())
+	else if (idx >= pop.size())
 		throw std::out_of_range("idx is out of the range of pop");
 
 	if ( idx == 0 )
@@ -66,7 +66,7 @@ int main(int argc, char **argv) {
 
 	std::fstream fs;
 	try {
-		fs = std::move( std::fstream(argv[1], std::fstream::in) );
+		fs = std::fstream(argv[1], std::fstream::in);
 	} catch (...) {
 		std::cout << "Could not open " << std::string(argv[1]) << std::endl;
 		exit(2);
