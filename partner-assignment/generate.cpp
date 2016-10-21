@@ -1,3 +1,9 @@
+#include <algorithm>
+#include <iostream>
+
+#include <vector>
+#include <string>
+
 #include "typedefs.h"
 #include "generate.h"
 
@@ -7,10 +13,10 @@ generate_partners(const s_vec& classmates, size_t_vec& partners,
 {
 	if (idx >= len) {
 		s_vec tmp;
-		for (auto& i : partners)
+		for (const auto& i : partners)
 			tmp.push_back(classmates[i]);
 
-		combos.push_back(std::move(tmp));
+		combos.push_back(tmp);
 
 		return; /* return bcs we don't need any more people */
 	}
@@ -18,6 +24,6 @@ generate_partners(const s_vec& classmates, size_t_vec& partners,
 	for (size_t i = start; i < classmates.size(); i++) {
 		partners[idx] = i;
 
-		generate_partners(classmates, partners, i+1, idx+1, len);
+		generate_partners(classmates, partners, i+1, idx+1, len, combos);
 	}
 }

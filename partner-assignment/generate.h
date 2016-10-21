@@ -2,6 +2,8 @@
 #define GENERATE_H
 
 #include "typedefs.h"
+#include <vector>
+#include <string>
 
 void
 generate_partners(const s_vec& classmates, size_t_vec& partners,

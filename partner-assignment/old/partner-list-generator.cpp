@@ -21,8 +21,8 @@
 
 #include <stdexcept>
 
-#include "typedefs.h"
-#include "generate.h"
+#include "../typedefs.h"
+#include "../generate.h"
 
 int main(int argc, char **argv) {
 
@@ -48,13 +48,21 @@ int main(int argc, char **argv) {
 
 	fs.close();
 
+	std::vector<s_vec> combos;
 	size_t_vec group(group_size);
-	generate_partners(students, group, 0, 0, group_size);
+	generate_partners(students, group, 0, 0, group_size, combos);
 
 	/* since we may have extras, we need to generate padding groups: */
 	if (students.size() % group_size != 0) {
 		group = size_t_vec(students.size() % group_size);
-		generate_partners(students, group, 0, 0, students.size() % group_size);
+		generate_partners(students, group, 0, 0, students.size() % group_size, combos);
+	}
+
+	for (const s_vec& g : combos) {
+		for (const auto& s : g) {
+			std::cout << s << " ";
+		}
+		std::cout << std::endl;
 	}
 
 	std::cout << "A class of size " << students.size() << " split into "

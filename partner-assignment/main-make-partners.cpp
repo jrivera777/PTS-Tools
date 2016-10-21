@@ -3,7 +3,10 @@
 	@author Charles Bailey
 	@version 0.0.1 10/21/16
 
-	Description: *
+	Description: This program will generate sets of
+	partners that do not overlap. Thus, it generates
+	arrangements of partners that never repeat, and it
+	generates as many of these as it can.
 */
 
 #include <iostream>
@@ -20,6 +23,8 @@
 #include "generate.h"
 #include "make-partner-sets.h"
 
+static void readfile(std::fstream& fs, s_vec& students);
+
 int main(int argc, char **argv) {
 
 	if (argc != 3) {
@@ -35,19 +40,29 @@ int main(int argc, char **argv) {
 		std::exit(2);
 	}
 
+	s_vec students;
+	readfile(fs, students);
+
 	const size_t group_size = std::stoi(std::string(argv[2]));
 
-	s_vec students;
-	std::string tmp_student;
-	while(std::getline(fs, tmp_student))
-		students.push_back(tmp_student);
-
-	fs.close();
-
 	std::vector<s_vec> combos;
-	size_t_vec partners;
+	size_t_vec partners(group_size);
+
 	generate_partners(students, partners, 0, 0, group_size, combos);
+
+	if (students.size() % group_size != 0) {
+		partners.resize( students.size() % group_size );
+		generate_partners(students, partners, 0, 0, students.size() % group_size, combos);
+	}
+
 	make_partner_sets(students, combos);
 
 	return 0;
+}
+
+static void readfile(std::fstream& fs, s_vec& students) {
+	std::string tmp_student;
+	while(std::getline(fs, tmp_student))
+		students.push_back(tmp_student);
+	fs.close();
 }
