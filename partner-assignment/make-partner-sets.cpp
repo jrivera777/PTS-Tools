@@ -46,7 +46,6 @@ void make_partner_sets(const s_vec& all_students, std::vector<s_vec> combos) {
 
 			combos.erase( combos.begin() + i );
 		}
-
 		print_p_set(partner_set);
 		partner_set.clear();
 
