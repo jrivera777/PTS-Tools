@@ -1,7 +1,7 @@
 /*
 	main-make-partners.cpp
 	@author Charles Bailey
-	@version 0.0.1 10/21/16
+	@version 0.0.1 10/22/16
 
 	Description: This program will generate sets of
 	partners that do not overlap. Thus, it generates

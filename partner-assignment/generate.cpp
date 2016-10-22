@@ -1,3 +1,12 @@
+/*
+	generate.cpp
+	@author Charles Bailey
+	@version 0.0.2 10/22/16
+
+	Description: this routine generates all
+	possible sets of partners of a given group
+	for a given set size.
+*/
 #include <algorithm>
 #include <iostream>
 

@@ -20,7 +20,7 @@
 
 #include <stdexcept>
 
-#include "typedefs.h"
+#include "../typedefs.h"
 
 void shuffle(s_vec& students);
 
