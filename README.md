@@ -1,9 +1,7 @@
 # PTS Tools
 
----
-## Changelogs
+* [Partner Assignment](partner-assignment/README.md)
 
-### random-seating.rb
+* [Random Seating](random-seating/README.md)
 
-Changed the functionality of `get_neighbors` to return a single-element
-array for the edge cases. This is because seating is not done in a circle.
+* [Direction Generator](direction-generator/README.md)
