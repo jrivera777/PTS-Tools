@@ -33,6 +33,6 @@
 	*/
 	bool
 	algo_x(const incidence_matrix& m, std::vector<bool> available_rows,
-	    std::vector<bool> available_cols, std::vector<size_t>& p_solution);
+	    std::vector<bool> available_cols, size_t_vec& p_solution);
 
 #endif

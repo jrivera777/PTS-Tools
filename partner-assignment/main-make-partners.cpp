@@ -51,7 +51,7 @@ int main(int argc, char **argv) {
 
 	const size_t group_size = std::stoi(std::string(argv[2]));
 
-	std::vector<s_vec> combos;
+	std::vector<size_t_vec> combos;
 	size_t_vec partners(group_size);
 
 	generate_partners(students, partners, 0, 0, group_size, combos);

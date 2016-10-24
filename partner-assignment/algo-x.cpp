@@ -10,7 +10,7 @@
 /* implementing Knuth's Algorithm X */
 bool
 algo_x(const incidence_matrix& m, std::vector<bool> available_rows,
-    std::vector<bool> available_cols, std::vector<size_t>& p_solution) {
+    std::vector<bool> available_cols, size_t_vec& p_solution) {
 
 	if (available_rows.empty())
 		available_rows.resize(m.size(), true);

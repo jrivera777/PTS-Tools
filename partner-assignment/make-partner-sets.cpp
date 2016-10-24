@@ -18,13 +18,13 @@
 #include "make-partner-sets.h"
 #include "algo-x.h"
 
-void make_partner_sets(const s_vec& all_students, const std::vector<s_vec>& combos) {
+void make_partner_sets(const s_vec& all_students, const std::vector<size_t_vec>& combos) {
 
 	/* build out an incidence matrix. */
 	incidence_matrix m( combos.size(), matrix_row(all_students.size() , false) );
 	for (size_t i = 0 ; i < m.size() ; i++ ) {
 		for (size_t j = 0 ; j < m[i].size() ; j++ ) {
-			m[i][j] = combos[i].end() != std::find(combos[i].begin(), combos[i].end(), all_students[j]);
+			m[i][j] = combos[i].end() != std::find(combos[i].begin(), combos[i].end(), j);
 		}
 	}
 
@@ -39,7 +39,7 @@ void make_partner_sets(const s_vec& all_students, const std::vector<s_vec>& comb
 	/* Go through the n-1 available, unique
 	   partner sets, keep track of the sets used,
 	   and relay the results. */
-	for (size_t i = 0; i < all_students.size(); i++) {
+	while (true) {
 
 		/* get rid of last round's solution if there is one. */
 		round_solution.clear();
@@ -57,8 +57,8 @@ void make_partner_sets(const s_vec& all_students, const std::vector<s_vec>& comb
 		for (const size_t& set : round_solution) {
 			avail_sets[set] = false; /* this line "deletes" the set from combos*/
 			std::cout << "\t";
-			for (const std::string& s : combos[set])
-				std::cout << s << " ";
+			for (const size_t& s : combos[set])
+				std::cout << all_students[s] << " ";
 			std::cout << std::endl;
 		}
 	}
