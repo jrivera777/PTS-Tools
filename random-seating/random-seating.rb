@@ -79,7 +79,7 @@ end
 
 
 
-# main routine: 
+# main routine:
 unless ARGV.length == 1
 	puts "[!] Usage: ./random-seating.rb [seating chart file]"
 	exit(1)

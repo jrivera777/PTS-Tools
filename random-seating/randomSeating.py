@@ -34,13 +34,13 @@ if __name__ == "__main__":
     parser.add_argument("studentFile")
     args = parser.parse_args()
 
-    #read students from    
+    #read students from
     students_ordered = open(args.studentFile).readlines()
     students_ordered = [name.strip() for name in students_ordered]
-    
+
     students = students_ordered[:]
     studentCount = len(students_ordered)
-    
+
     newSeating = [] #load with new seating arangement
 
     #keep working until we've seated everyone
@@ -68,6 +68,6 @@ if __name__ == "__main__":
             students.remove(nextStudent)
             newSeating.append(nextStudent)
 
-#display where each student sits, according to computer number in STEM Lab.        
+#display where each student sits, according to computer number in STEM Lab.
 for i in range(0, studentCount):
     print("Station", i + 2, "-", newSeating[i])
