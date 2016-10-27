@@ -17,6 +17,6 @@
 	@param combos a vector of string vectors holding all possible
 	sets of partners.
 */
-void make_partner_sets(const s_vec& all_students, const std::vector<s_vec>& combos);
+void make_partner_sets(const s_vec& all_students, const std::vector<size_t_vec>& combos);
 
 #endif

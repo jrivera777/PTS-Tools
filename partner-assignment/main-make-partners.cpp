@@ -14,6 +14,7 @@
 #include <cstdio>
 
 #include <algorithm>
+#include <time.h>
 
 #include <vector>
 
@@ -24,8 +25,10 @@
 #include "make-partner-sets.h"
 
 static void readfile(std::fstream& fs, s_vec& students);
+static void shuffle(s_vec& vec);
 
 int main(int argc, char **argv) {
+	srand(time(NULL));
 
 	if (argc != 3) {
 		std::cout << "[!] Usage: ./make-partner-sets <text file with students> <group size>\n";
@@ -42,10 +45,13 @@ int main(int argc, char **argv) {
 
 	s_vec students;
 	readfile(fs, students);
+	fs.close();
+
+	shuffle(students);
 
 	const size_t group_size = std::stoi(std::string(argv[2]));
 
-	std::vector<s_vec> combos;
+	std::vector<size_t_vec> combos;
 	size_t_vec partners(group_size);
 
 	generate_partners(students, partners, 0, 0, group_size, combos);
@@ -64,5 +70,11 @@ static void readfile(std::fstream& fs, s_vec& students) {
 	std::string tmp_student;
 	while(std::getline(fs, tmp_student))
 		students.push_back(tmp_student);
-	fs.close();
+}
+
+static void shuffle(s_vec& vec) {
+	for (int i = vec.size()-1, rand_idx; i >= 0; i--) {
+		rand_idx = rand() % vec.size();
+		std::swap( vec[ i ] , vec[ rand_idx ] );
+	}
 }

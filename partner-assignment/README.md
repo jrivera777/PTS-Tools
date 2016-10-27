@@ -13,6 +13,8 @@ Compile easily with `make`. You will need to have `g++-5` installed.
 The program will specify the arguments it needs. The program will print out
 All sets of partners of a given group for a given size.
 
+Note: At this point, the input file must have no two equal entries. This will be resolved soon.
+
 ---
 #### Created by Charles Bailey (@c650)
 
