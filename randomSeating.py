@@ -8,6 +8,7 @@
 # Program usage: python randomSeating.py <InputFile>
 #   - InputFile: text file with each student name on a separate line. Names
 #     above or below each other are neighbors.
+#   - "-s" or "--spaced" options: spaces out students with one seat b
 
 import argparse
 import random
