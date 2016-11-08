@@ -30,8 +30,16 @@ def getNeighbors(population, person):
 
 if __name__ == "__main__":
 
-    parser = argparse.ArgumentParser()
-    parser.add_argument("studentFile")
+    parser = argparse.ArgumentParser(description="Generate a random seating arrangement "
+                                                 "such that no two students that are seated "
+                                                 "next to each other in class, based on the "
+                                                 "given text file, end up next to each other.")
+    
+    parser.add_argument("-s", "--spaced", action="store_true", help="Students should be spaced "
+                                                                    "out with one seat between each")
+    parser.add_argument("studentFile", help="File containing student names, each on a separate line. "
+                                            "Students directly above or below each other sit next to "
+                                            "each other in class.")
     args = parser.parse_args()
 
     #read students from    
