@@ -27,6 +27,8 @@ def getNeighbors(population, person):
 
     return [population[pidx - 1], population[pidx + 1]]
 
+#constants
+MAX_SEATS = 14
 
 if __name__ == "__main__":
 
@@ -45,6 +47,8 @@ if __name__ == "__main__":
     #read students from    
     students_ordered = open(args.studentFile).readlines()
     students_ordered = [name.strip() for name in students_ordered]
+
+    isSpacedOut = args.spaced
     
     students = students_ordered[:]
     studentCount = len(students_ordered)
@@ -76,6 +80,8 @@ if __name__ == "__main__":
             students.remove(nextStudent)
             newSeating.append(nextStudent)
 
-#display where each student sits, according to computer number in STEM Lab.        
-for i in range(0, studentCount):
-    print("Station", i + 2, "-", newSeating[i])
+    #display where each student sits, according to computer number in STEM Lab.
+    station = 0 if isSpacedOut else 1        
+    for i in range(0, studentCount):
+        station += 2 if station + 2 <= MAX_SEATS and isSpacedOut else 1
+        print("Station", station, "-", newSeating[i])
