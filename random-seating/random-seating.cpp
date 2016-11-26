@@ -31,6 +31,8 @@ void
 shuffle_and_verify(std::vector<std::string>& pop,
 	std::map<std::string, std::vector<std::string>>& neighbors)
 {
+	if (pop.size() <= 3) return;
+
 	int i, n, j;
 	for (i = pop.size()-1, n = pop.size(); i >= 0; i--) {
 		j = rand() % n;

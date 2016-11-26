@@ -53,6 +53,7 @@ end
 	@return void
 =end
 def shuffle_and_verify(pop, neighbors)
+	return pop if pop.length <= 3
 
 	changes = true;
 	while changes
