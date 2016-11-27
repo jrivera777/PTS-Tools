@@ -10,48 +10,30 @@
 
 #include <stdexcept>
 
-std::vector<std::string>
-get_neighbors(const std::vector<std::string>& pop, const size_t& idx) {
-	if (pop.empty())
-		throw std::invalid_argument("An empty vector cannot yield neighbors.");
-	else if (pop.size() == 1)
-		return std::vector<std::string>{""};
-	else if (idx >= pop.size())
-		throw std::out_of_range("idx is out of the range of pop");
-
-	if ( idx == 0 )
-		return std::vector<std::string>{ pop[idx+1], pop.back() };
-	else if ( idx == pop.size()-1 )
-		return std::vector<std::string>{ pop.front(), pop[idx-1] };
-
-	return std::vector<std::string>{ pop[idx-1], pop[idx+1] };
-}
-
 void
-shuffle_and_verify(std::vector<std::string>& pop,
-	std::map<std::string, std::vector<std::string>>& neighbors)
+get_good_shuf(std::vector<size_t>& arr, const size_t& len)
 {
-	if (pop.size() <= 3) return;
-
+	arr.resize(len);
 	int i, n, j;
-	for (i = pop.size()-1, n = pop.size(); i >= 0; i--) {
-		j = rand() % n;
-		std::swap(pop[i], pop[j]);
-	}
+	for (i = 0, n = arr.size(); i < n; i++)
+		arr[i] = i;
 
+	for (i = arr.size()-1, n = arr.size(); i >= 0; i--)
+		std::swap(arr[i], arr[ rand() % n ]);
+
+	if (len <= 3) return;
 
 	bool changes = true;
 	while (changes) {
 		changes = false;
-		for (i = 1, n = pop.size(); i < n; i++) {
-			if ( std::find(neighbors[pop[i]].begin(), neighbors[pop[i]].end(), pop[i-1]) != neighbors[pop[i]].end() ) {
+		for (i = 1, n = arr.size(); i < n; i++) {
+			if ( std::abs(arr[i-1] - arr[i]) <= 1 ) {
 
 				do {
 					j = rand() % n;
 				} while (j == i-1 || j == i);
 
-				std::swap(pop[i], pop[j]);
-
+				std::swap(arr[i], arr[j]);
 				changes = true;
 			}
 		}
@@ -83,18 +65,9 @@ int main(int argc, char **argv) {
 	/* close file stream*/
 	fs.close();
 
-	if (students_orig.size() <= 1) {
-		std::cout << "Not enough students to shuffle.\n";
-		exit(3);
-	}
+	std::vector<size_t> arr;
+	get_good_shuf(arr, students_orig.size());
 
-	std::map<std::string, std::vector<std::string> > neighbors;
-	for (size_t i = 0; i < students_orig.size(); i++)
-		neighbors[ students_orig[i] ] = get_neighbors(students_orig, i);
-
-	std::vector<std::string> students_new = students_orig;
-	shuffle_and_verify(students_new, neighbors);
-
-	for (size_t i = 0; i < students_new.size(); i++)
-		std::cout << i+2 << "|\t" << students_new[i] << std::endl;
+	for (size_t i = 0; i < arr.size(); i++)
+		std::cout << i+2 << "|\t" << students_orig[arr[i]] << std::endl;
 }
