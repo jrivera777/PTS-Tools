@@ -85,4 +85,4 @@ if __name__ == "__main__":
     station = 0 if isSpacedOut else 1        
     for i in range(0, studentCount):
         station += 2 if station + 2 <= MAX_SEATS and isSpacedOut else 1
-        print("Station", station, "-", newSeating[i])
+        print("Station" + str(station) + " - " +  newSeating[i])
