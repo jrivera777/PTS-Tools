@@ -10,4 +10,4 @@ build: ${MPSETS_SRC}
 .PHONY: clean
 
 clean:
-	rm ./*.o
+	rm ./*.out
