@@ -24,6 +24,8 @@
 #include "generate.h"
 #include "make-partner-sets.h"
 
+#include "json.hpp" /* nlohmann::json is pretty awesome. */
+
 static void readfile(std::fstream& fs, s_vec& students);
 static void shuffle(s_vec& vec);
 
