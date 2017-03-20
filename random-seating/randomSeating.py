@@ -8,6 +8,7 @@
 # Program usage: python randomSeating.py <InputFile>
 #   - InputFile: text file with each student name on a separate line. Names
 #     above or below each other are neighbors.
+#   - "-s" or "--spaced" options: spaces out students with one seat b
 
 import argparse
 import random
@@ -27,20 +28,32 @@ def getNeighbors(population, person):
 
     return [population[pidx - 1], population[pidx + 1]]
 
+#constants
+MAX_SEATS = 14
 
 if __name__ == "__main__":
 
-    parser = argparse.ArgumentParser()
-    parser.add_argument("studentFile")
+    parser = argparse.ArgumentParser(description="Generate a random seating arrangement "
+                                                 "such that no two students that are seated "
+                                                 "next to each other in class, based on the "
+                                                 "given text file, end up next to each other.")
+    
+    parser.add_argument("-s", "--spaced", action="store_true", help="Students should be spaced "
+                                                                    "out with one seat between each")
+    parser.add_argument("studentFile", help="File containing student names, each on a separate line. "
+                                            "Students directly above or below each other sit next to "
+                                            "each other in class.")
     args = parser.parse_args()
 
-    #read students from
+    #read students from    
     students_ordered = open(args.studentFile).readlines()
     students_ordered = [name.strip() for name in students_ordered]
 
+    isSpacedOut = args.spaced
+    
     students = students_ordered[:]
     studentCount = len(students_ordered)
-
+    
     newSeating = [] #load with new seating arangement
 
     #keep working until we've seated everyone
@@ -68,6 +81,8 @@ if __name__ == "__main__":
             students.remove(nextStudent)
             newSeating.append(nextStudent)
 
-#display where each student sits, according to computer number in STEM Lab.
-for i in range(0, studentCount):
-    print("Station", i + 2, "-", newSeating[i])
+    #display where each student sits, according to computer number in STEM Lab.
+    station = 0 if isSpacedOut else 1        
+    for i in range(0, studentCount):
+        station += 2 if station + 2 <= MAX_SEATS and isSpacedOut else 1
+        print("Station" + str(station) + " - " +  newSeating[i])

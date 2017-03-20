@@ -28,14 +28,14 @@ for i in range(4):
   used.append(next)
   print(messages[next], end="")
   for i in range(0, 5):
-    print(".", end="");
+    print(".", end="")
     time.sleep(.2)
   print(".")
 
 
 print("Generating directions", end="")
 for i in range(0, 5):
-  print(".", end="");
+  print(".", end="")
   time.sleep(1)
 
 used.clear()
