@@ -16,7 +16,11 @@
 	@param all_students a string vector containing all students.
 	@param combos a vector of string vectors holding all possible
 	sets of partners.
+
+	@return n-1 sets of partner sets.
 */
-void make_partner_sets(const s_vec& all_students, const std::vector<size_t_vec>& combos);
+typedef std::vector<std::vector<std::vector<std::string>>> set_of_partner_sets;
+
+set_of_partner_sets make_partner_sets(const s_vec& all_students, const std::vector<size_t_vec>& combos);
 
 #endif

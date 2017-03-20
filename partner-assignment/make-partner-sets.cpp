@@ -18,7 +18,7 @@
 #include "make-partner-sets.h"
 #include "algo-x.h"
 
-void make_partner_sets(const s_vec& all_students, const std::vector<size_t_vec>& combos) {
+set_of_partner_sets make_partner_sets(const s_vec& all_students, const std::vector<size_t_vec>& combos) {
 
 	/* build out an incidence matrix. */
 	incidence_matrix m( combos.size(), matrix_row(all_students.size() , false) );
@@ -35,6 +35,11 @@ void make_partner_sets(const s_vec& all_students, const std::vector<size_t_vec>&
 	   and holds, upon being returned from the algorithm,
 	   a valid, unique set of partners. */
 	std::vector<size_t> round_solution;
+
+	/*
+		This'll hold all the solutions for returning.
+	*/
+	set_of_partner_sets solutions;
 
 	/* Go through the n-1 available, unique
 	   partner sets, keep track of the sets used,
@@ -53,13 +58,24 @@ void make_partner_sets(const s_vec& all_students, const std::vector<size_t_vec>&
 		/* print out the partner set and
 		   *ensure* that the sets will
 		   not be used again later. */
-		std::cout << "Partner Set: \n";
+		// std::cout << "Partner Set: \n";
+		// for (const size_t& set : round_solution) {
+		// 	avail_sets[set] = false; /* this line "deletes" the set from combos*/
+		// 	std::cout << "\t";
+		// 	for (const size_t& s : combos[set])
+		// 		std::cout << all_students[s] << " ";
+		// 	std::cout << std::endl;
+		// }
+
+		solutions.push_back(std::vector<std::vector<std::string>>());
 		for (const size_t& set : round_solution) {
-			avail_sets[set] = false; /* this line "deletes" the set from combos*/
-			std::cout << "\t";
-			for (const size_t& s : combos[set])
-				std::cout << all_students[s] << " ";
-			std::cout << std::endl;
+			avail_sets[set] = false;
+			solutions.back().push_back(std::vector<std::string>());
+			for (const size_t& s : combos[set]) {
+				solutions.back().back().push_back(all_students[s]);
+			}
 		}
 	}
+
+	return solutions;
 }
