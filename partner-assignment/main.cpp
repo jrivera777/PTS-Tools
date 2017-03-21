@@ -10,6 +10,7 @@
 */
 
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <cstdio>
 
@@ -24,13 +25,15 @@
 #include "generate.h"
 #include "make-partner-sets.h"
 
+#include "json.hpp" /* nlohmann::json is pretty awesome. */
+
 static void readfile(std::fstream& fs, s_vec& students);
 static void shuffle(s_vec& vec);
 
 int main(int argc, char **argv) {
 	srand(time(NULL));
 
-	if (argc != 3) {
+	if (argc < 3) {
 		std::cout << "[!] Usage: ./make-partner-sets <text file with students> <group size>\n";
 		std::exit(1);
 	}
@@ -42,6 +45,8 @@ int main(int argc, char **argv) {
 		std::cout << "Something went wrong: " << e.what() << std::endl;
 		std::exit(2);
 	}
+
+	bool use_json = argc >= 4 && std::string(argv[3]) == "--as-json";
 
 	s_vec students;
 	readfile(fs, students);
@@ -61,7 +66,21 @@ int main(int argc, char **argv) {
 		generate_partners(students, partners, 0, 0, students.size() % group_size, combos);
 	}
 
-	make_partner_sets(students, combos);
+	auto sets = make_partner_sets(students, combos);
+	if (!use_json) {
+		for (auto& set : sets) {
+			std::cout << "Partner Set:\n";
+			for (auto& pair : set) {
+				std::cout << '\t';
+				for (auto& person : pair)
+					std::cout << person << ' ';
+				std::cout << '\n';
+			}
+		}
+	} else {
+		nlohmann::json json(sets);
+		std::cout << std::setw(4) << json << '\n';
+	}
 
 	return 0;
 }
