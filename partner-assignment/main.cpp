@@ -46,7 +46,11 @@ int main(int argc, char **argv) {
 		std::exit(2);
 	}
 
-	bool use_json = argc >= 4 && std::string(argv[3]) == "--as-json";
+	bool use_json = false;
+	if (argc >= 4) {
+		std::string asj{argv[3]};
+		use_json = asj == "--as-json" || asj == "-j";
+	}
 
 	s_vec students;
 	readfile(fs, students);
