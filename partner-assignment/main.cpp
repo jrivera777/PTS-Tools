@@ -34,7 +34,7 @@ int main(int argc, char **argv) {
 	srand(time(NULL));
 
 	if (argc < 3) {
-		std::cout << "[!] Usage: ./make-partner-sets <text file with students> <group size>\n";
+		std::cout << "[!] Usage: ./make-partner-sets <text file with students> <group size> [--as-json]\n";
 		std::exit(1);
 	}
 
