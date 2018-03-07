@@ -2,3 +2,4 @@
 *.class
 /**/old
 *.out
+Gemfile.lock
